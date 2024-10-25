@@ -38,21 +38,23 @@
         <!-- Total Employees -->
         <div class="col-md-4">
             <div class="card text-center">
-                <div class="card-header">Total Employees</div>
+                <div class="card-header">Total Workforce</div>
                 <div class="card-body">
                     <i class="material-icons icon text-primary">people</i>
                     <p class="stats-text">{{total_employees}} Employees</p>
+                    <p class="card-text">Current count of all employees in the organization.</p>
                 </div>
             </div>
         </div>
 
-        <!-- Active Employees -->
+        <!-- Verified Employees -->
         <div class="col-md-4">
             <div class="card text-center">
                 <div class="card-header">Verified Employees</div>
                 <div class="card-body">
-                    <i class="material-icons icon text-success">check_circle</i>
+                    <i class="material-icons icon text-success">verified_user</i>
                     <p class="stats-text">{{ verified_employees }} Verified</p>
+                    <p class="card-text">Number of employees with verified accounts.</p>
                 </div>
             </div>
         </div>
@@ -60,10 +62,11 @@
         <!-- Pending Verifications -->
         <div class="col-md-4">
             <div class="card text-center">
-                <div class="card-header">Pending Verifications</div>
+                <div class="card-header">Pending Approvals</div>
                 <div class="card-body">
-                    <i class="material-icons icon text-warning">hourglass_empty</i>
+                    <i class="material-icons icon text-warning">hourglass_top</i>
                     <p class="stats-text">{{pending_verifications}} Pending</p>
+                    <p class="card-text">Employees awaiting verification of their details.</p>
                 </div>
             </div>
         </div>
@@ -76,9 +79,9 @@
             <div class="card text-center">
                 <div class="card-body">
                     <i class="material-icons icon text-info">person</i>
-                    <h5 class="card-title">My Profile</h5>
-                    <p class="card-text">View and update your profile details.</p>
-                    <a href="/admin/profile/" class="btn btn-outline-primary">Go to Profile</a>
+                    <h5 class="card-title">Admin Profile</h5>
+                    <p class="card-text">Access and update your personal admin profile details.</p>
+                    <a href="/admin/profile/" class="btn btn-outline-primary">View Profile</a>
                 </div>
             </div>
         </div>
@@ -88,8 +91,8 @@
             <div class="card text-center">
                 <div class="card-body">
                     <i class="material-icons icon text-success">manage_accounts</i>
-                    <h5 class="card-title">Manage Employees</h5>
-                    <p class="card-text">Add, update, and verify employee details.</p>
+                    <h5 class="card-title">Employee Management</h5>
+                    <p class="card-text">Review, edit, and verify employee information.</p>
                     <a href="/manage/employees/" class="btn btn-outline-success">Manage Employees</a>
                 </div>
             </div>
@@ -102,10 +105,10 @@
         <div class="col-md-6">
             <div class="card text-center">
                 <div class="card-body">
-                    <i class="material-icons icon text-warning">analytics</i>
-                    <h5 class="card-title">Generate Attendance Reports</h5>
-                    <p class="card-text">View detailed employee attendance records.</p>
-                    <a href="/all/employees/attendance/details/" class="btn btn-outline-warning">Generate Reports</a>
+                    <i class="material-icons icon text-warning">insert_chart</i>
+                    <h5 class="card-title">Attendance Reports</h5>
+                    <p class="card-text">Generate comprehensive attendance reports for all employees.</p>
+                    <a href="/all/employees/attendance/details/" class="btn btn-outline-warning">View Reports</a>
                 </div>
             </div>
         </div>
@@ -114,10 +117,10 @@
         <div class="col-md-6">
             <div class="card text-center">
                 <div class="card-body">
-                    <i class="material-icons icon text-danger">logout</i>
+                    <i class="material-icons icon text-danger">exit_to_app</i>
                     <h5 class="card-title">Logout</h5>
-                    <p class="card-text">Log out of the system securely.</p>
-                    <a href="{% url 'admin_logout' %}" class="btn btn-outline-danger">Logout</a>
+                    <p class="card-text">Securely log out of your admin account.</p>
+                    <a href="{% url 'admin_logout' %}" class="btn btn-outline-danger">Log Out</a>
                 </div>
             </div>
         </div>

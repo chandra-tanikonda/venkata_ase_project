@@ -25,52 +25,17 @@
         dom: 'Bfrtip',
         buttons: [
             {
-                extend: 'csv',
-                text: 'Export as CSV', // Change the button text if needed
-                filename: 'Employee_Attendance_History', // Specify the filename for the CSV file
-                title: '' // Setting this to an empty string if you don't want a title row in your CSV
+                extend: 'excel',
+                text: 'Export as excel',
+                filename: 'records',
+                title: ''
             }
         ]
     });
 });
 
 </script>
-    <style>
-    html, body {
-    height: 100%;
-    margin: 0;
-}
 
-body {
-    display: flex;
-    flex-direction: column;
-}
-
-main {
-    flex: 1;
-}
-        .btn {
-            border-radius: 20px !important;
-            background-color: #e57373 !important;
-            color: white !important;
-        }
-        a {
-            color: #e57373 !important;
-        }
-        th, td {
-            border: 1px solid #800000 !important;
-        }
-        body {
-            background-color: rgb(242, 242, 242) !important;
-        }
-
-        .dataTables_wrapper .dt-buttons {
-  float:none;
-  text-align:center;
-
-  background-color:#2F539B;color:white;
-}
-    </style>
 </head>
 <body>
 
@@ -87,9 +52,11 @@ main {
         <tr>
           <th>Attendance ID</th>
             <th>Employee Code</th>
-            <th>Employee Name</th>
-            <th>Employee Phone Number</th>
-            <th>Employee Email</th>
+            <th>Name</th>
+            <th>Contact Number</th>
+            <th>Email</th>
+            <th>Address</th>
+            <th>ID Proof Number</th>
             <th>Date</th>
           <th>Present/Absent</th>
 
@@ -99,10 +66,12 @@ main {
         {% for value in values %}
             <tr>
                 <td>{{value.pk}}</td>
-                <td>{{value.employee.employee_code}}</td>
+                <td>{{value.employee.employee_identifier}}</td>
                 <td>{{value.employee.first_name}}{{value.employee.last_name}}</td>
-                <td>{{value.employee.phone_number}}</td>
+                <td>{{value.employee.contact_number}}</td>
                 <td>{{value.employee.email}}</td>
+                <td>{{value.employee.street_address_1}}, {{value.employee.street_address_2}},{{value.employee.city}},{{value.employee.state}}</td>
+                <td>{{value.employee.identification_number}}</td>
                 <td>{{value.attendance_date}}</td>
                 <td>Present</td>
                 <!-- Continue for other dates similarly... -->

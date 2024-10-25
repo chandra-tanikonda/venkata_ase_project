@@ -132,11 +132,12 @@
         <!-- Update Profile Button -->
         <br><br>
         <div class="text-center">
-            {% if request.user.employee_identifier %}
-                <a href="/employee/profile/update/" class="btn">Update Profile</a>
-            {% else %}
-                <small class="form-text text-muted">Your profile details already verified by admin so you can't update your details.</small>
-            {% endif %}
+            <a href="/employee/profile/update/" class="btn">Update Profile</a>
+<!--            {% if request.user.employee_identifier %}-->
+
+<!--            {% else %}-->
+<!--                <small class="form-text text-muted">Your profile details already verified by admin so you can't update your details.</small>-->
+<!--            {% endif %}-->
         </div>
 
         <br><br>

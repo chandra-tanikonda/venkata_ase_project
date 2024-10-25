@@ -152,13 +152,17 @@ def company_employee_dashboard(request):
         # Calculate total possible working days from date_of_hire to today
         total_days_since_hire = (date.today() - employee.date_of_hire).days
         print("days worked", days_worked)
+        print("total_days_since_hire",total_days_since_hire)
         print()
         # Avoid division by zero for new hires
         if total_days_since_hire > 0:
             # Attendance percentage formula
             attendance_percentage = (days_worked / total_days_since_hire) * 100
         else:
-            attendance_percentage = 0  # Assume 100% if hired today
+            if total_days_since_hire == 0 and days_worked > 0:
+                attendance_percentage = (days_worked / 1) * 100
+            else:
+                attendance_percentage = 0  # Assume 100% if hired today
     else:
         attendance_percentage = 0  # If no hire date is set, assume 0%
     context = {
@@ -215,6 +219,7 @@ def generate_qr_for_employee_by_admin(request, emp_id):
         emp.qr_image.save(f"{emp.employee_identifier}.png", File(qr_file), save=True)
 
     emp.qr_code_created = True
+    emp.active_employee = True
     emp.save()
     # Assuming 'get_all_emp_details' is the name of the route to redirect after saving
     return redirect('get_all_emp_details')
