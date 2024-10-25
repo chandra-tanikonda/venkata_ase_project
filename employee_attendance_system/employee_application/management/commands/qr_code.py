@@ -54,7 +54,7 @@ def open_web_browser_for_qr_code_scan():
             print("QR Code Value:", qr_value)
 
             # Attempt to find an employee with the matching unique QR code
-            employee = Employee.objects.filter(employee_code=qr_value).first()
+            employee = Employee.objects.filter(employee_identifier=qr_value).first()
             if not employee:
                 print(f"No employee associated with QR code: {qr_value}")
                 continue  # Skip to the next QR code if no employee is found
@@ -64,8 +64,7 @@ def open_web_browser_for_qr_code_scan():
             # Check if an attendance record already exists for today
             attendance_record, created = EmployeeAttendanceRecord.objects.get_or_create(
                 employee=employee,
-                attendance_date=today,
-                defaults={'notes': 'Attendance auto-recorded by QR scan.'}
+                attendance_date=today
             )
 
             # Provide feedback based on whether the record was created or already existed

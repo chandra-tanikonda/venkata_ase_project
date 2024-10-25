@@ -51,17 +51,19 @@
                 </div>
             </div>
         </div>
-
-        <!-- Total Leaves Taken -->
-<div class="col-md-4">
+        <div class="col-md-4">
     <div class="card text-center">
-        <div class="card-header">Leaves Taken</div>
+        <div class="card-header">Attendance Percentage</div>
         <div class="card-body">
-            <i class="material-icons icon text-danger">event_busy</i>
-            <p class="stats-text">{{leaves_taken}} Leaves</p>
+            <i class="material-icons icon text-info">percent</i>
+            <p class="stats-text">{{ attendance_percentage }}%</p>
         </div>
     </div>
 </div>
+
+
+        <!-- Total Leaves Taken -->
+
 
 
         <!-- Recent Attendance -->
@@ -100,9 +102,9 @@
             <div class="card text-center">
                 <div class="card-body">
                     <i class="material-icons icon text-danger">qr_code</i>
-                    {% if request.user.qr_code_image %}
+                    {% if request.user.qr_image %}
                         <h5 class="card-title">Download QR-Code</h5>
-                        <a href="{{ request.user.qr_code_image.url }}" download="EmployeeQR-{{ employee.employee_code }}.png" class="btn btn-outline-danger">Download</a>
+                        <a href="{{ request.user.qr_image.url }}" download="EmployeeQR-{{ employee.employee_code }}.png" class="btn btn-outline-danger">Download</a>
                     {% else %}
                         <h5 class="card-title">Request QR Code</h5>
                         <p>
@@ -124,7 +126,7 @@
                     <i class="material-icons icon text-success">check_circle</i>
                     <h5 class="card-title">Take Attendance</h5>
                     <p class="card-text">Scan your QR code to mark attendance.</p>
-                    <a href="#" class="btn btn-outline-success" data-toggle="modal" data-target="#webcamInstructionsModal">Open Scanner</a>
+                    <a href="#" class="btn btn-outline-success" data-bs-toggle="modal" data-bs-target="#webcamInstructionsModal">Open Scanner</a>
                 </div>
             </div>
         </div>
@@ -144,7 +146,7 @@
 
     <!-- Logout -->
     <div class="text-center">
-        <a href="/emp/logout/" class="btn btn-custom btn-lg">Logout</a>
+        <a href="{% url 'emp_logout' %}" class="btn btn-custom btn-lg">Logout</a>
     </div>
 </div>
 
@@ -154,21 +156,19 @@
   <div class="modal-dialog">
     <div class="modal-content">
       <div class="modal-header">
-        <h5 class="modal-title" id="webcamModalLabel">Webcam Instructions</h5>
-        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-          <span aria-hidden="true">&times;</span>
-        </button>
+        <h5 class="modal-title text-center" id="webcamModalLabel">Webcam Instructions</h5>
+
       </div>
       <div class="modal-body">
         <ol>
-            <li>Run the Python script to open the webcam.</li>
+            <li>We can not open the webcam using button, we need to run the Python script to open the webcam.</li>
             <li>Place your QR code in front of the webcam.</li>
             <li>Ensure the code is clearly visible and aligned.</li>
             <li>The system will detect and scan the QR code automatically.</li>
         </ol>
       </div>
       <div class="modal-footer">
-        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
       </div>
     </div>
   </div>

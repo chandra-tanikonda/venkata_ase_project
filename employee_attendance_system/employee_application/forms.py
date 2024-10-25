@@ -12,7 +12,7 @@ class EmployeeCreationForm(UserCreationForm):
     city = forms.CharField(required=True, label="City", max_length=50)
     state = forms.CharField(required=True, label="State", max_length=20)
     zip_code = forms.CharField(required=True, label="Postal Code", max_length=10)
-    employee_identifier = forms.CharField(required=True, label="Identifier Number", max_length=20)
+    identification_number = forms.CharField(required=True, label="Identifier Number", max_length=20)
 
     class Meta:
         model = Employee
