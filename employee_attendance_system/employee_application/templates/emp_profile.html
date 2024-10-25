@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <title>Employee Details</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- Bootstrap CSS -->
+    <link href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" rel="stylesheet">
+
+    <style>
+
+
+        .btn{
+            color: white;
+            background-color:#ff5733 !important;
+            border-color:#ff5733 !important;
+            border-radius:25px !important;
+        }
+        body {
+            display: flex;
+            flex-direction: column;
+        }
+
+        main {
+            flex: 1;
+        }
+
+        .container {
+            width: 80% !important;
+        }
+
+        .header-text {
+            font-size: 28px;
+            text-align: center;
+            font-weight: bold;
+        }
+
+        .profile-section {
+            margin-top: 30px;
+        }
+
+        .profile-card {
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+        }
+
+        .update-btn {
+            background-color: #007bff;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 5px;
+            text-align: center;
+            margin-top: 20px;
+            cursor: pointer;
+        }
+
+        .update-btn:hover {
+            background-color: #0056b3;
+        }
+
+        table {
+            margin-bottom: 20px;
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="container mt-5">
+        <center>
+            <h1 class="header-text">Employee Profile Details</h1>
+        </center>
+
+        <!-- Employee Personal Details Section -->
+        <div class="profile-section">
+            <div class="profile-card">
+                <table class="table table-borderless">
+                    <tbody>
+                        <tr>
+                            <td><strong>First Name:</strong></td>
+                            <td>{{ request.user.first_name }}</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Last Name:</strong></td>
+                            <td>{{ request.user.last_name }}</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Email:</strong></td>
+                            <td>{{ request.user.email }}</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Phone Number:</strong></td>
+                            <td>{{ request.user.username }}</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Employee Code:</strong></td>
+                            <td>{{ request.user.employee_identifier }}</td>
+                        </tr>
+                    <tr>
+                            <td><strong>Address Line 1:</strong></td>
+                            <td>{{ request.user.street_address_1 }}</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Address Line 2:</strong></td>
+                            <td>{{ request.user.street_address_2 }}</td>
+                        </tr>
+                        <tr>
+                            <td><strong>City & State:</strong></td>
+                            <td>{{ request.user.city }} & {{ request.user.state }}</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Country & Zip Code:</strong></td>
+                            <td>USA & {{ request.user.zip_code }}</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Identification Number:</strong></td>
+                            <td>{{ request.user.identification_number }}</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Date of Hire:</strong></td>
+                            <td>{{ request.user.date_of_hire }}</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+
+
+        <!-- Update Profile Button -->
+        <br><br>
+        <div class="text-center">
+            {% if request.user.employee_identifier %}
+                <a href="/employee/profile/update/" class="btn">Update Profile</a>
+            {% else %}
+                <small class="form-text text-muted">Your profile details already verified by admin so you can't update your details.</small>
+            {% endif %}
+        </div>
+
+        <br><br>
+
+    </div>
+
+</body>
+
+</html>

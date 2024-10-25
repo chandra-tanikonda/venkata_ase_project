@@ -1,0 +1,102 @@
+<html>
+
+<head>
+    <title>Employee Details</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- Bootstrap CSS -->
+    <link href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.datatables.net/1.13.1/css/jquery.dataTables.min.css">
+    <script type="text/javascript" src="https://code.jquery.com/jquery-2.1.1.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
+    <script src="https://cdn.datatables.net/1.13.1/js/jquery.dataTables.min.js"></script>
+    <script>
+        $(document).ready(function() {
+            $('#attendance_table').DataTable();
+        });
+    </script>
+    <style>
+    html, body {
+    height: 100%;
+    margin: 0;
+}
+
+body {
+    display: flex;
+    flex-direction: column;
+}
+
+main {
+    flex: 1;
+}
+        .container {
+            width: 90% !important;
+        }
+
+        h1.header-text {
+            font-size: 30px;
+            text-align: center;
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="container mt-5">
+        <center>
+
+            <h1 class="header-text mt-3">Employee Details</h1>
+        </center>
+        <table class="table table-bordered table-striped table-hover mt-3">
+            <thead class="thead-dark">
+                <tr>
+                    <th>Last Name</th>
+                     <th>First Name</th>
+                    <th>Email</th>
+                    <th>Phone Number</th>
+                    <th>Address</th>
+                    <th>Attendance Date</th>
+                    <th>Is Employee Verified</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>{{request.user.last_name}}</td>
+                    <td>{{request.user.first_name}}</td>
+                    <td>{{request.user.email}}</td>
+                    <td>{{request.user.username}}</td>
+                    <td>
+                        {% if request.user.address_line_1 %}
+                        {{request.user.address_line_1}},{{request.user.address_line_2}}
+                        {{request.user.city}}, {{request.user.state}}
+                        {{request.user.country}}
+                        {% else %}
+                            <a href="/employee/address/" target="_blank">Upload Address</a>
+                        {% endif %}
+                    </td>
+                    <td>{{attendance_date}}</td>
+                    <td>
+                        {% if request.user.is_qr_code_generated %}
+                        Yes
+                        {% else %}
+                        No
+                        {% endif %}
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+        <center>
+            <br>
+            {% if request.user.is_qr_code_generated %}
+                <a class="button btn-info btn" role="button" style="color:white;">Run QR Code Script</a>
+            <br><br>
+                {% if user_msg %}
+                    <p class="text-success"><b>Your account details verified by admin and QR code generated for attendance</b></p>
+                {% endif %}
+            {% else %}
+                <p class="text-danger"><b>Awaiting for admin verification your employement details</b></p>
+            {% endif %}
+        </center>
+    </div>
+</body>
+
+</html>

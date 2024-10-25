@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html>
+<head>
+    {% load crispy_forms_tags %}
+    {% load static %}
+    <title>Admin Login</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css">
+    <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
+
+    <style>
+        body {
+            background-color: #f2f2f2;
+        }
+
+        .btn-primary {
+            border-radius: 20px;
+            background: #ee6e73;
+            color: white;
+        }
+
+        a {
+            color: #ee6e73;
+        }
+
+        .footer {
+            bottom: 0;
+            width: 100%;
+        }
+
+        .button {
+            width: 200px !important;
+        }
+    </style>
+</head>
+<body>
+
+<div class="container mt-5">
+    <div class="row justify-content-center">
+        <div class="col-md-12 text-center">
+            <i class="fa fa-user-circle-o fa-5x" aria-hidden="true"></i>
+            <h3>Admin Login</h3>
+        </div>
+        <div class="col-md-6">
+            <form method="post" action="/employee/admin/login/" class="mt-4">
+                {% csrf_token %}
+                <div class="form-group">
+                    <label for="Email">Email Address</label>
+                    <input id="Email" type="email" class="form-control" name="admin_email" required>
+                </div>
+                <div class="form-group">
+                    <label for="Password">Password</label>
+                    <input id="Password" type="password" class="form-control" name="admin_password" required>
+                </div>
+                <div class="text-center">
+                    <button type="submit" class="btn button btn-info">Login</button>
+                    <br><br>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<footer class="footer bg-dark text-light py-3 text-center" style="margin-top:300px;">
+    <div class="container">
+        <div class="row">
+            <div class="col-md-12">
+                <h5>Project Description</h5>
+                <p>
+                    This project is designed to take down employees’ attendance using a QR code. Every employee will be
+                    given a card containing a unique QR code representing their unique ID. They can scan their cards
+                    in front of a webcam upon arrival, and the system will record their attendance with date and time.
+                    The system stores all employee attendance records and generates an overall report in an Excel sheet
+                    for the admin. It also allows the admin to search for specific employees' attendance.
+                </p>
+            </div>
+            <div class="col-md-12">
+                <div class="text-center">
+                    © 2023 Wichita State University
+                </div>
+            </div>
+        </div>
+    </div>
+</footer>
+</body>
+</html>

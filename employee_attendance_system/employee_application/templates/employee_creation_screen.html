@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html>
+<head>
+    {% load crispy_forms_tags %}
+    {% load static %}
+    <title>Employee Signup</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css">
+    <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
+
+    <style>
+        body {
+
+        }
+        .btn{
+            color: white;
+            background-color:#ff5733 !important;
+            border-color:#ff5733 !important;
+            border-radius:25px !important;
+        }
+
+        #hint_id_password1{
+            display:none;
+        }
+        a {
+            color: #ee6e73;
+        }
+        .footer {
+            bottom: 0;
+            width: 100%;
+        }
+        .button {
+            width: 200px !important;
+        }
+    </style>
+</head>
+<body>
+
+<div class="container mt-5">
+    <div class="row">
+        <div class="col-12 text-center">
+            <i class="fa fa-user-circle-o fa-5x" aria-hidden="true"></i>
+            <h3>
+                {% if "admin" in request.path %}
+                Admin Registration
+                {% else %}
+                <u>Employee Registration</u>
+                {% endif %}
+
+            </h3>
+            <br>
+        </div>
+        <div class="col-12">
+            <form method="post">
+                {% csrf_token %}
+
+                <!-- Start of two-column layout -->
+                <div class="row">
+                    <!-- Personal Details -->
+                    <div class="col-md-6">
+                        <h5>Personal Details</h5>
+                        <div class="form-group">
+
+                            {{ form.first_name|as_crispy_field }}
+                        </div>
+                        <div class="form-group">
+
+                            {{ form.last_name|as_crispy_field }}
+                        </div>
+                        <div class="form-group">
+
+                            {{ form.contact_number|as_crispy_field }}
+                        </div>
+                        <div class="form-group">
+
+                            {{ form.email|as_crispy_field }}
+                        </div>
+
+                         <div class="form-group">
+
+                            {{ form.employee_identifier|as_crispy_field }}
+
+                              <small class="form-text text-muted">Please enter your driving license number or state id number.</small>
+                        </div>
+
+                        <div class="form-group">
+
+                            {{ form.password1|as_crispy_field }}
+                        </div>
+
+                    </div>
+
+                    <!-- Address Details -->
+                    <div class="col-md-6">
+                        <h5>Address Details</h5>
+                        <div class="form-group">
+
+                            {{ form.street_address_1|as_crispy_field }}
+                        </div>
+                        <div class="form-group">
+
+                            {{ form.street_address_2|as_crispy_field }}
+                        </div>
+                        <div class="form-group">
+
+                            {{ form.city|as_crispy_field }}
+                        </div>
+                        <div class="form-group">
+
+                            {{ form.state|as_crispy_field }}
+                        </div>
+                        <div class="form-group">
+
+                            {{ form.zip_code|as_crispy_field }}
+                            <small class="form-text text-muted">Default country is USA.</small>
+                        </div>
+                        <div class="form-group">
+                            {{ form.password2|as_crispy_field }}
+                        </div>
+
+                    </div>
+                </div>
+
+                <div class="text-center">
+                    <button type="submit" class="btn button btn-info">Register</button>
+
+                    <br><br>
+
+                    <!-- Login link -->
+                    <p>Already have an account? <a href="/login/">Login here</a>.</p>
+                    <br><br>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+
+</body>
+</html>

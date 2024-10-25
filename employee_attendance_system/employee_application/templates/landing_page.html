@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Employee Attendance System - ASE Group Project</title>
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            background-color: #f0f2f5;
+            padding-top: 50px;
+        }
+        .container {
+            padding: 30px;
+            border-radius: 10px;
+            margin: auto;
+        }
+        h1, h2 {
+            text-align: center;
+            color: #343a40;
+        }
+        .table {
+            margin-top: 20px;
+        }
+        .job-description {
+            background-color: #6c757d;
+            color: white;
+            padding: 20px;
+            border-radius: 8px;
+            margin-top: 30px;
+        }
+        .footer {
+            margin-top: 30px;
+            text-align: center;
+            color: #6c757d;
+        }
+        .btn-custom {
+            width: 280px;
+            margin: 5px;
+            background-color:#ff5733 !important;
+            border-color:#ff5733 !important;
+            border-radius:25px !important;
+        }
+        .buttons-container {
+            text-align: center;
+            margin-top: 20px;
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <!-- Title Section -->
+    <h1>Employee Attendance System</h1>
+    <p class="text-center text-muted">A project developed to track employee attendance using QR codes.</p>
+
+    <br><br>
+    <!-- Group Members Section -->
+    <h2>Group Member Details</h2>
+    <table class="table table-striped text-center">
+        <thead class="table-dark">
+            <tr>
+                <th>Member Name</th>
+                <th>WSU ID</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td>Venkata Reddy Gunturi</td>
+                <td>X123456</td>
+            </tr>
+            <tr>
+                <td>Member 2</td>
+                <td>X123457</td>
+            </tr>
+            <tr>
+                <td>Member 3</td>
+                <td>X123458</td>
+            </tr>
+        </tbody>
+    </table>
+
+    <!-- Buttons Section -->
+    <div class="buttons-container">
+        <a href="/employee/create/" class="btn btn-primary btn-custom">Employee Register / login</a>
+        <a href="/create/admin" class="btn btn-primary btn-custom">Admin Register / login</a>
+    </div>
+
+    <!-- Job Description Section -->
+    <div class="job-description">
+        <h2 style="color:white;">Project Description</h2>
+        <p>
+            This project is designed to take down employees’ attendance using a QR code. Every employee will have a card that contains a unique QR code representing their ID. Employees scan their card in front of a webcam upon arrival, and the system notes down their attendance, including the date and time. The system stores all the employees' attendance records and generates overall attendance reports in an Excel sheet for the admin. It also allows the admin to search for specific employees’ attendance.
+        </p>
+    </div>
+
+    <!-- Footer Section -->
+    <div class="footer">
+        <p>&copy; 2024 Group 13 - Employee Attendance System</p>
+    </div>
+</div>
+
+<!-- Bootstrap JS -->
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

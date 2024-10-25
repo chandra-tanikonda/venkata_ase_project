@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html>
+<head>
+    {% load crispy_forms_tags %}
+    {% load static %}
+    <title>Employee Signup</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css">
+    <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
+
+    <style>
+        html, body {
+            min-height: 100%;
+            margin: 0;
+        }
+
+        body {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .content {
+            flex: 1;
+        }
+
+        footer {
+            flex-shrink: 0;
+            width: 100%;
+        }
+
+        .btn-primary {
+            border-radius: 20px;
+            background: #ee6e73;
+            color: white;
+        }
+
+        a {
+            color: #ee6e73;
+        }
+        .btn-primary {
+            border-radius: 20px;
+            background: #17a2b8;
+            color: white;
+        }
+    </style>
+</head>
+<body>
+
+<!-- Content wrapper -->
+<div class="content">
+    <div class="container h-100">
+        <center>
+            <br>
+            <h3>Employee Login</h3>
+        </center>
+        <br>
+        <div class="row" > <!-- This will center your form in the middle of the page -->
+<div class="col-md-3"></div>
+            <div class="col-md-6">
+                <form method="post" action="/employee/admin/login/">
+                    {% csrf_token %}
+                    <div class="form-group">
+                        <label for="Email">Email Address</label>
+                        <input id="Email" type="email" class="form-control" name="admin_email" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="Password">Password</label>
+                        <input id="Password" type="password" class="form-control" name="admin_password" required>
+                    </div>
+                    <center>
+                        <button type="submit" class="btn button btn-info" style="width:100px;">Login</button>
+                    </center>
+
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- End content wrapper -->
+
+<!-- Footer -->
+
+
+<script src="https://kit.fontawesome.com/yourkit.js"></script> <!-- Make sure you include your Font Awesome Kit here if you are using icons from FA -->
+</body>
+</html>
