@@ -118,9 +118,9 @@ def company_admin_login(request):
         # if not admin.check_password(password):
         #     return render(request, 'admin_login.html',
         #                   {'admin_signup_msg': 'Password is incorrect '})
-        # perform_login(request, admin, company_settings.EMAIL_VERIFICATION, signup=False,
-        #               redirect_url=None, signal_kwargs=None)
-        return redirect('admin_dashboard')
+        perform_login(request, admin, company_settings.EMAIL_VERIFICATION, signup=False,
+                       redirect_url=None, signal_kwargs=None)
+        return redirect('admin_home')
     else:
         return render(request, 'admin_login.html')
 
@@ -211,6 +211,21 @@ def generate_qr_for_employee_by_admin(request, emp_id):
 
 
 def employee_logic_logic(request):
+    if request.method == "POST":
+        email_address = request.POST["admin_email"]
+        password = request.POST["admin_password"]
+        admin_users = Employee.objects.filter(email=email_address)
+        admin = admin_users.first()
+        if not admin:
+            return render(request, 'employee_login_screen.html',
+                          {'admin_signup_msg': 'No Admin user found with ' + str(email_address)})
+
+        # if not admin.check_password(password):
+        #     return render(request, 'admin_login.html',
+        #                   {'admin_signup_msg': 'Password is incorrect '})
+        perform_login(request, admin, company_settings.EMAIL_VERIFICATION, signup=False,
+                       redirect_url=None, signal_kwargs=None)
+        return redirect('emp_home')
     return render(request,'employee_login_screen.html')
 
 
