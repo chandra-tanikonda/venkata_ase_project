@@ -115,11 +115,11 @@ def company_admin_login(request):
             return render(request, 'admin_login.html',
                           {'admin_signup_msg': 'No Admin user found with ' + str(email_address)})
 
-        if not admin.check_password(password):
-            return render(request, 'admin_login.html',
-                          {'admin_signup_msg': 'Password is incorrect '})
-        perform_login(request, admin, company_settings.EMAIL_VERIFICATION, signup=False,
-                      redirect_url=None, signal_kwargs=None)
+        # if not admin.check_password(password):
+        #     return render(request, 'admin_login.html',
+        #                   {'admin_signup_msg': 'Password is incorrect '})
+        # perform_login(request, admin, company_settings.EMAIL_VERIFICATION, signup=False,
+        #               redirect_url=None, signal_kwargs=None)
         return redirect('admin_dashboard')
     else:
         return render(request, 'admin_login.html')
@@ -368,6 +368,11 @@ def employee_logout_from_system(request):
     logout(request)
     messages.success(request, "You have been logged out successfully.")
     return redirect('emp_login')  # Replace 'login' with the name of your login page URL
+
+def admin_logout_from_system(request):
+    logout(request)
+    messages.success(request, "You have been logged out successfully.")
+    return redirect('emp_admin_login')  # Replace 'login' with the name of your login page URL
 
 def employee_logout(request):
     return render(request,'employee_logout.html')

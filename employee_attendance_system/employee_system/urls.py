@@ -27,6 +27,7 @@ urlpatterns = [
     path('employee/create/', views.new_employee_register, name='emp_create'),
     path('emp/login/', views.employee_logic_logic, name='emp_login'),
     path('emp/logout/', views.employee_logout_from_system, name='employee_logout'),
+    path('emp/admin/logout/', views.admin_logout_from_system,name='emp_admin_logout'),
     path('emp/logout/confirmation/',views.employee_logout,name='emp_logout'),
     path('employee/profile/update/', views.update_employee_details, name='profile_update'),
     path('emp/home/', views.company_employee_dashboard, name='emp_home'),
