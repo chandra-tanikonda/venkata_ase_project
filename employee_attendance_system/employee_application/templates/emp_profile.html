@@ -92,11 +92,9 @@
 
         <!-- Update Profile Button -->
         <div class="w3-center">
-            {% if request.user.employee_identifier %}
+            
                 <a href="/employee/profile/update/" class="w3-btn w3-btn-custom">Update Profile</a>
-            {% else %}
-                <small class="w3-text-grey">Your profile details have already been verified by the admin, so you can't update your details.</small>
-            {% endif %}
+
         </div>
     </div>
 
