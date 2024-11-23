@@ -43,11 +43,9 @@
     <div class="w3-center">
         <i class="fa fa-user-circle-o w3-xxlarge" aria-hidden="true"></i>
         <h3 class="header-text">
-            {% if "admin" in request.path %}
+
                 Update Admin Profile
-            {% else %}
-                Update Employee Profile
-            {% endif %}
+
         </h3>
         <br>
     </div>
@@ -77,35 +75,7 @@
         </div>
 
 
-        <div class="form-section w3-margin-bottom">
-            <label class="form-label">Street Address 1</label>
-            <input type="text" name="street_address_1" value="{{ form.street_address_1.value }}" class="w3-input w3-border">
-        </div>
 
-        <div class="form-section w3-margin-bottom">
-            <label class="form-label">Street Address 2</label>
-            <input type="text" name="street_address_2" value="{{ form.street_address_2.value }}" class="w3-input w3-border">
-        </div>
-
-        <div class="form-section w3-margin-bottom">
-            <label class="form-label">City</label>
-            <input type="text" name="city" value="{{ form.city.value }}" class="w3-input w3-border">
-        </div>
-
-        <div class="form-section w3-margin-bottom">
-            <label class="form-label">State</label>
-            <input type="text" name="state" value="{{ form.state.value }}" class="w3-input w3-border">
-        </div>
-
-        <div class="form-section w3-margin-bottom">
-            <label class="form-label">Zip Code</label>
-            <input type="text" name="zip_code" value="{{ form.zip_code.value }}" class="w3-input w3-border">
-        </div>
-
-        <div class="form-section w3-margin-bottom">
-            <label class="form-label">Identification Number</label>
-            <input type="text" name="identification_number" value="{{ form.identification_number.value }}" class="w3-input w3-border">
-        </div>
 
         <!-- Form Submit Button -->
         <div class="w3-center">

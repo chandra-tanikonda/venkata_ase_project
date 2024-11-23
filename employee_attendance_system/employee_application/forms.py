@@ -12,7 +12,7 @@ class EmployeeCreationForm(UserCreationForm):
     city = forms.CharField(required=True, label="City", max_length=50)
     state = forms.CharField(required=True, label="State", max_length=20)
     zip_code = forms.CharField(required=True, label="Postal Code", max_length=10)
-    identification_number = forms.CharField(required=True, label="Identifier Number", max_length=20)
+    employee_identifier = forms.CharField(required=True, label="Identifier Number", max_length=20)
 
     class Meta:
         model = Employee
@@ -53,12 +53,20 @@ class AdminRegistrationForm(UserCreationForm):
 
 
 
+class AdminUpdateForm(forms.ModelForm):
+
+    class Meta:
+        model = Employee
+        fields = ['first_name', 'last_name', 'contact_number', 'email']
+    def __init__(self, *args, **kwargs):
+        super(AdminUpdateForm, self).__init__(*args, **kwargs)
+        # If work_experience_info is optional at the model level, this is not necessary
 
 class EmployeeAddressUpdateForm(forms.ModelForm):
 
     class Meta:
         model = Employee
-        fields = ['first_name', 'last_name', 'contact_number', 'email','street_address_1', 'street_address_2', 'city', 'state', 'zip_code']
+        fields = ['first_name', 'last_name', 'contact_number', 'email','street_address_1', 'street_address_2', 'city', 'state', 'zip_code','identification_number']
         labels = {
             'street_address_1': 'Address Line 1',
             'street_address_2': 'Address Line 2',

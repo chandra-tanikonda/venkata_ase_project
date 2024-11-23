@@ -4,22 +4,19 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Employee Dashboard</title>
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
     <style>
         body {
             background-color: #f8f9fa;
         }
-        .card {
+        .w3-card-custom {
             border-radius: 10px;
             box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
         }
-        .card-header {
+        .w3-header-dark {
             background-color: #343a40;
             color: white;
-        }
-        .progress-bar {
-            background-color: #ee6e73;
         }
         .icon {
             font-size: 40px;
@@ -29,87 +26,72 @@
             font-size: 18px;
             color: #343a40;
         }
+        .btn-custom {
+            background-color: #ee6e73;
+            color: white;
+        }
     </style>
 </head>
 <body>
 
-<div class="container my-5">
-    <h2 class="text-center mb-4">Employee Dashboard</h2>
+<div class="w3-container w3-padding-32">
+    <h2 class="w3-center">Employee Dashboard</h2>
 
     <!-- Employee Summary Cards -->
-    <div class="row mb-4">
-        <!-- Attendance Summary -->
-
-
+    <div class="w3-row-padding">
         <!-- Total Days Worked -->
-        <div class="col-md-4">
-            <div class="card text-center">
-                <div class="card-header">Days Worked</div>
-                <div class="card-body">
-                    <i class="material-icons icon text-success">calendar_today</i>
-                    <p class="stats-text">{{days_worked}} Days</p>
+        <div class="w3-half">
+            <div class="w3-card w3-center w3-card-custom w3-white">
+                <header class="w3-container w3-header-dark">Total Days Worked</header>
+                <div class="w3-container">
+                    <i class="material-icons icon w3-text-green">calendar_today</i>
+                    <p class="stats-text">You've worked {{ days_worked }} days in total.</p>
                 </div>
             </div>
         </div>
-        <div class="col-md-4">
-    <div class="card text-center">
-        <div class="card-header">Attendance Percentage</div>
-        <div class="card-body">
-            <i class="material-icons icon text-info">percent</i>
-            <p class="stats-text">{{ attendance_percentage }}%</p>
-        </div>
-    </div>
-</div>
-
-
-        <!-- Total Leaves Taken -->
-
-
 
         <!-- Recent Attendance -->
-        <div class="col-md-4">
-            <div class="card text-center">
-                <div class="card-header">Recent Attendance</div>
-                <div class="card-body">
-                    <i class="material-icons icon text-warning">history</i>
+        <div class="w3-half">
+            <div class="w3-card w3-center w3-card-custom w3-white">
+                <header class="w3-container w3-header-dark">Recent Attendance</header>
+                <div class="w3-container">
+                    <i class="material-icons icon w3-text-orange">history</i>
                     {% if recent_attendance.attendance_date %}
-                        <p class="stats-text">Last Check-in: {{recent_attendance.attendance_date}}</p>
+                        <p class="stats-text">Your last check-in was on {{ recent_attendance.attendance_date }}.</p>
                     {% else %}
-                    <p class="stats-text">No Record found</p>
+                        <p class="stats-text">No recent attendance records found.</p>
                     {% endif %}
-
                 </div>
             </div>
         </div>
     </div>
 
     <!-- Dashboard Links (Cards) -->
-    <div class="row mb-4">
+    <div class="w3-row-padding w3-margin-top">
         <!-- Profile -->
-        <div class="col-md-6">
-            <div class="card text-center">
-                <div class="card-body">
-                    <i class="material-icons icon text-info">person</i>
-                    <h5 class="card-title">My Profile</h5>
-                    <p class="card-text">View and update your profile details.</p>
-                    <a href="/employee/profile/" class="btn btn-outline-primary">Go to Profile</a>
+        <div class="w3-half">
+            <div class="w3-card w3-center w3-card-custom w3-white">
+                <div class="w3-container">
+                    <i class="material-icons icon w3-text-blue">person</i>
+                    <h5>My Profile</h5>
+                    <p>View and update your personal and contact details for account accuracy.</p>
+                    <a href="/employee/profile/" class="w3-button w3-border w3-border-blue">Go to Profile</a>
                 </div>
             </div>
         </div>
 
         <!-- QR Code Download / Request -->
-        <div class="col-md-6">
-            <div class="card text-center">
-                <div class="card-body">
-                    <i class="material-icons icon text-danger">qr_code</i>
+        <div class="w3-half">
+            <div class="w3-card w3-center w3-card-custom w3-white">
+                <div class="w3-container">
+                    <i class="material-icons icon w3-text-red">qr_code</i>
                     {% if request.user.qr_image %}
-                        <h5 class="card-title">Download QR-Code</h5>
-                        <a href="{{ request.user.qr_image.url }}" download="EmployeeQR-{{ employee.employee_code }}.png" class="btn btn-outline-danger">Download</a>
+                        <h5>Download QR Code</h5>
+                        <p>Access your unique QR code for quick attendance logging.</p>
+                        <a href="{{ request.user.qr_image.url }}" download="EmployeeQR-{{ employee.employee_code }}.png" class="w3-button w3-border w3-border-red">Download</a>
                     {% else %}
-                        <h5 class="card-title">Request QR Code</h5>
-                        <p>
-                            Your profile details under verification, please wait for admin response.
-                        </p>
+                        <h5>Request QR Code</h5>
+                        <p>Your profile is under verification. The QR code will be available once approved.</p>
                     {% endif %}
                     <br>
                 </div>
@@ -118,62 +100,78 @@
     </div>
 
     <!-- Attendance Actions (Cards) -->
-    <div class="row mb-4">
+    <div class="w3-row-padding w3-margin-top">
         <!-- Take Attendance -->
-        <div class="col-md-6">
-            <div class="card text-center">
-                <div class="card-body">
-                    <i class="material-icons icon text-success">check_circle</i>
-                    <h5 class="card-title">Take Attendance</h5>
-                    <p class="card-text">Scan your QR code to mark attendance.</p>
-                    <a href="#" class="btn btn-outline-success" data-bs-toggle="modal" data-bs-target="#webcamInstructionsModal">Open Scanner</a>
+        <div class="w3-half">
+            <div class="w3-card w3-center w3-card-custom w3-white">
+                <div class="w3-container">
+                    <i class="material-icons icon w3-text-green">check_circle</i>
+                    <h5>Take Attendance</h5>
+                    <p>Use this feature to scan your QR code and log your attendance.</p>
+                    <button class="w3-button w3-border w3-border-green" onclick="document.getElementById('webcamInstructionsModal').style.display='block'">Open Scanner</button>
                 </div>
             </div>
         </div>
 
         <!-- Attendance Records -->
-        <div class="col-md-6">
-            <div class="card text-center">
-                <div class="card-body">
-                    <i class="material-icons icon text-warning">description</i>
-                    <h5 class="card-title">Attendance Records</h5>
-                    <p class="card-text">View or download your attendance history.</p>
-                    <a href="/employee/attendance/details/" class="btn btn-outline-warning">View Records</a>
+        <div class="w3-half">
+            <div class="w3-card w3-center w3-card-custom w3-white">
+                <div class="w3-container">
+                    <i class="material-icons icon w3-text-orange">description</i>
+                    <h5>Attendance Records</h5>
+                    <p>Review and download your complete attendance history.</p>
+                    <a href="/emp/attendance/details/" class="w3-button w3-border w3-border-orange">View Records</a>
                 </div>
             </div>
         </div>
     </div>
 
     <!-- Logout -->
-    <div class="text-center">
-        <a href="{% url 'emp_logout' %}" class="btn btn-outline-danger">Logout</a>
-    </div>
+    <div class="w3-container w3-center w3-margin-top">
+    <button onclick="document.getElementById('logoutModal').style.display='block'" class="w3-button w3-red">
+        Logout
+    </button>
+</div>
 </div>
 
-
-<!-- Webcam Modal -->
-<div class="modal fade" id="webcamInstructionsModal" tabindex="-1" aria-labelledby="webcamModalLabel" aria-hidden="true">
-  <div class="modal-dialog">
-    <div class="modal-content">
-      <div class="modal-header">
-        <h5 class="modal-title text-center" id="webcamModalLabel">Webcam Instructions</h5>
-
-      </div>
-      <div class="modal-body">
-        <ol>
-            <li>We can not open the webcam using button, we need to run the Python script to open the webcam.</li>
-            <li>Place your QR code in front of the webcam.</li>
-            <li>Ensure the code is clearly visible and aligned.</li>
-            <li>The system will detect and scan the QR code automatically.</li>
-        </ol>
-      </div>
-      <div class="modal-footer">
-        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-      </div>
+<!-- Webcam Instructions Modal -->
+<div id="webcamInstructionsModal" class="w3-modal">
+  <div class="w3-modal-content w3-card-4">
+    <header class="w3-container w3-teal">
+      <span onclick="document.getElementById('webcamInstructionsModal').style.display='none'" class="w3-button w3-display-topright">&times;</span>
+      <h5>Webcam Instructions</h5>
+    </header>
+    <div class="w3-container">
+      <ol>
+          <li>Run the Python script to open the webcam (Python programming web requests cannot open external webcam).</li>
+          <li>Hold your QR code in front of the webcam.</li>
+          <li>Ensure the QR code is visible and aligned.</li>
+          <li>The system will automatically scan and record the QR code.</li>
+      </ol>
     </div>
+    <footer class="w3-container w3-teal">
+      <button class="w3-button w3-white w3-border" onclick="document.getElementById('webcamInstructionsModal').style.display='none'">Close</button>
+    </footer>
   </div>
 </div>
 
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+<div id="logoutModal" class="w3-modal" style="display: none;">
+    <div class="w3-modal-content w3-animate-opacity w3-card-4 w3-round-large" style="max-width:400px">
+        <header class="w3-container w3-red">
+            <span onclick="document.getElementById('logoutModal').style.display='none'"
+                  class="w3-button w3-display-topright">&times;</span>
+            <h2>Confirm Logout</h2>
+        </header>
+        <div class="w3-container w3-padding">
+            <p>Are you sure you want to log out?</p>
+        </div>
+        <footer class="w3-container w3-padding-16 w3-center">
+            <a href="{% url 'employee_logout' %}" class="w3-button w3-green w3-round w3-margin-right">Yes, Logout</a>
+            <button onclick="document.getElementById('logoutModal').style.display='none'"
+                    class="w3-button w3-gray w3-round">Cancel</button>
+        </footer>
+    </div>
+</div>
+
 </body>
 </html>

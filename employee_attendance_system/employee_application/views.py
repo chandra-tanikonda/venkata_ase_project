@@ -39,15 +39,43 @@ from django.contrib.auth import login
 
 def create_new_admin_user(request):
     if request.method == "POST":
-        form = AdminRegistrationForm(request.POST)
-        if form.is_valid():
-            # Call helper function to create and log in the new admin user
-            admin_user = save_and_create_admin_user(request, form)
-            return redirect('admin_home')
-    else:
-        form = AdminRegistrationForm()
+        # Capture form data manually
+        username = request.POST.get('username')
+        email = request.POST.get('email')
+        password1 = request.POST.get('password1')
+        password2 = request.POST.get('password2')
+        first_name = request.POST.get('first_name')
+        last_name = request.POST.get('last_name')
 
-    return render(request, 'admin_registration.html', {'form': form})
+        # Basic validation
+        if password1 != password2:
+            messages.error(request, "Passwords do not match.")
+            return render(request, 'admin_registration.html')
+
+        if Employee.objects.filter(username=username).exists():
+            messages.error(request, "Username is already taken.")
+            return render(request, 'admin_registration.html')
+
+        # Create and save the admin user
+        admin_user = Employee.objects.create_user(username=username, email=email, password=password1)
+        admin_user.first_name = first_name
+        admin_user.last_name = last_name
+        admin_user.is_staff = True
+        admin_user.contact_number = username
+        admin_user.is_superuser = True
+        admin_user.save()
+
+        # Log the new admin user in
+        #login(request, admin_user)
+        authenticated_user = authenticate(username=username, password=password1)
+        if authenticated_user is not None:
+            login(request, authenticated_user)
+            print("User session created successfully")
+        else:
+            print("Authentication failed for new user")
+        return redirect('admin_home')
+
+    return render(request, 'admin_registration.html')
 
 
 def save_and_create_admin_user(request, form):
@@ -71,52 +99,30 @@ def save_and_create_admin_user(request, form):
     return admin_user
 
 
-from django.contrib.auth import logout
-
-def admin_logout(request):
-    logout(request)
-    return redirect('emp_admin_login')
-
-
-
-def employee_logout(request):
-    """
-    Logs out the user and redirects to the login page.
-    """
-    logout(request)
-    return redirect('emp_login')  # Redirect to the login page after logging out
-
 def company_admin_login(request):
     """
-    Admin login view to authenticate the admin user using email and password.
+        Handling the admin login in this screen, getting admin email address and password.
     """
-    # Redirect to dashboard if the user is already logged in and active
-    if request.user.is_authenticated and request.user.is_active:
-        return redirect('admin_home')
-
-    # Handle POST request for login
+    admin_user = request.user
+    # if admin_user.is_active:
+    #     return redirect('emp_admin_dashboard')
     if request.method == "POST":
-        email_address = request.POST.get("admin_email")
-        password = request.POST.get("admin_password")
+        email_address = request.POST["admin_email"]
+        password = request.POST["admin_password"]
+        admin_users = Employee.objects.filter(email=email_address)
+        admin = admin_users.first()
+        if not admin:
+            return render(request, 'admin_login.html',
+                          {'admin_signup_msg': 'No Admin user found with ' + str(email_address)})
 
-        # Validate if the email address is associated with an admin
-        try:
-            admin_user = Employee.objects.get(email=email_address, is_superuser=True)
-        except Employee.DoesNotExist:
-            messages.error(request, f"No admin found with email {email_address}")
-            return render(request, 'admin_login.html')
-
-        # Validate password for the admin user
-        if not admin_user.check_password(password):
-            messages.error(request, "Incorrect password")
-            return render(request, 'admin_login.html')
-
-        # Log the admin user in and redirect to dashboard
-        login(request, admin_user)
-        return redirect('admin_home')
-
-    # Render the login page for GET request
-    return render(request, 'admin_login.html')
+        if not admin.check_password(password):
+            return render(request, 'admin_login.html',
+                          {'admin_signup_msg': 'Password is incorrect '})
+        perform_login(request, admin, company_settings.EMAIL_VERIFICATION, signup=False,
+                      redirect_url=None, signal_kwargs=None)
+        return redirect('admin_dashboard')
+    else:
+        return render(request, 'admin_login.html')
 
 def company_admin_dashboard(request):
     """
@@ -127,8 +133,8 @@ def company_admin_dashboard(request):
         return redirect('emp_admin_login')
         # Query the employee records to calculate the dashboard metrics
     total_employees = Employee.objects.filter(is_superuser=False).count()
-    verified_employees = Employee.objects.filter(active_employee=True,is_superuser=False).count()
-    pending_verifications = Employee.objects.filter(active_employee=False,is_superuser=False).count()  # Count e
+    verified_employees = Employee.objects.filter(qr_code_created=True,is_superuser=False).count()
+    pending_verifications = Employee.objects.filter(qr_code_created=False,is_superuser=False).count()  # Count e
     context = {
         'total_employees': total_employees,
         'verified_employees': verified_employees,
@@ -137,49 +143,39 @@ def company_admin_dashboard(request):
     return render(request,'admin_dashboard.html', context)
 
 
-from datetime import date
 def company_employee_dashboard(request):
     employee = request.user
     print("employee id", employee)
     # Calculate total days worked (total attendance records)
-    days_worked = EmployeeAttendanceRecord.objects.filter(employee=employee).count()
+    days_worked = EmployeeAttendanceRecord.objects.filter(employee=request.user.pk).count()
     # Get recent attendance (last 5 records for display)
-    recent_attendance = EmployeeAttendanceRecord.objects.filter(employee=employee).order_by('-attendance_date').first()
-    leaves_taken = EmployeeAttendanceRecord.objects.filter(employee=request.user, status='Leave').count()
+    recent_attendance = EmployeeAttendanceRecord.objects.filter(employee=request.user.pk).order_by('-attendance_date').first()
+    leaves_taken = EmployeeAttendanceRecord.objects.filter(employee=request.user.pk, status='Leave').count()
 
-    # Calculate attendance percentage based on date_of_hire
-    if employee.date_of_hire:
-        # Calculate total possible working days from date_of_hire to today
-        total_days_since_hire = (date.today() - employee.date_of_hire).days
-        print("days worked", days_worked)
-        print("total_days_since_hire",total_days_since_hire)
-        print()
-        # Avoid division by zero for new hires
-        if total_days_since_hire > 0:
-            # Attendance percentage formula
-            attendance_percentage = (days_worked / total_days_since_hire) * 100
-        else:
-            if total_days_since_hire == 0 and days_worked > 0:
-                attendance_percentage = (days_worked / 1) * 100
-            else:
-                attendance_percentage = 0  # Assume 100% if hired today
-    else:
-        attendance_percentage = 0  # If no hire date is set, assume 0%
     context = {
         'days_worked': days_worked,
         'recent_attendance': recent_attendance,
-        'leaves_taken':leaves_taken,'attendance_percentage':attendance_percentage
+        'leaves_taken':leaves_taken
     }
     return render(request,'employee_home.html',context)
+
 def list_employee_details(request):
-    employees = Employee.objects.filter(is_superuser=False).values(
-        "first_name","last_name","email","contact_number","street_address_1","street_address_2",
-        "city","state","identification_number",
-        "pk","date_of_hire",
-        "employee_identifier",
-        "qr_code_created"
+    # Filter employees based on their QR code creation status
+    verified_employees = Employee.objects.filter(is_superuser=False, qr_code_created=True).values(
+        "first_name", "last_name", "email", "contact_number", "street_address_1", "street_address_2",
+        "city", "state", "identification_number", "pk", "date_of_hire", "employee_identifier"
     )
-    return render(request, 'all_employee_details.html', {'employees':employees})
+
+    unverified_employees = Employee.objects.filter(is_superuser=False, qr_code_created=False).values(
+        "first_name", "last_name", "email", "contact_number", "street_address_1", "street_address_2",
+        "city", "state", "identification_number", "pk", "date_of_hire", "employee_identifier"
+    )
+
+    # Pass both verified and unverified employees to the template
+    return render(request, 'all_employee_details.html', {
+        'verified_employees': verified_employees,
+        'unverified_employees': unverified_employees
+    })
 
 
 import os
@@ -191,42 +187,31 @@ import qrcode
 def generate_qr_for_employee_by_admin(request, emp_id):
     admin_user = request.user
     if not admin_user.is_active or not admin_user.is_staff:
-        # Assuming 'emp_admin_login' is the name of your login route
         return redirect('emp_admin_login')
     try:
         emp = Employee.objects.get(pk=emp_id)
     except Employee.DoesNotExist:
-        # Handle the case where the Employee does not exist
-        # Redirect or show an error message
-        return redirect('error_page')  # Replace 'error_page' with actual error page route name
+        return redirect('error_page')
 
     # Generate QR code
-    emp.employee_identifier = "group13_employee"+str(emp.pk)
+    emp.employee_identifier = "EMP"+str(emp.pk)
+    emp.active_employee = True
     emp.save()
     qr_img = qrcode.make(emp.employee_identifier)
-
-    # Define the path and filename to save the QR code image
     qr_path = os.path.join(settings.MEDIA_ROOT, 'qr', f"{emp.employee_identifier}.png")
-
-    # Ensure the directory exists
     os.makedirs(os.path.dirname(qr_path), exist_ok=True)
-
-    # Save the image to the filesystem
     qr_img.save(qr_path)
-
-    # Open the saved image and attach it to the model
     with open(qr_path, 'rb') as qr_file:
         emp.qr_image.save(f"{emp.employee_identifier}.png", File(qr_file), save=True)
 
     emp.qr_code_created = True
-    emp.active_employee = True
     emp.save()
     # Assuming 'get_all_emp_details' is the name of the route to redirect after saving
-    return redirect('get_all_emp_details')
+    return redirect('manage_employees')
 
 
 def employee_logic_logic(request):
-    return render(request,'employee_login.html')
+    return render(request,'employee_login_screen.html')
 
 
 def save_and_login_user(request, form):
@@ -244,30 +229,84 @@ from openpyxl import load_workbook
 
 from django.utils import timezone
 
-def new_employee_register(request):
-    if request.method == "POST":
-        post_form = EmployeeCreationForm(request.POST)
-        if post_form.is_valid():
-            print("form is valid")
-            # Save the user instance and log in the user after registration
-            user = post_form.save(commit=False)
-            if "admin" in request.path:
-                user.is_staff = True
-                user.is_superuser = True
-            else:
-                user.date_of_hire = timezone.now().date()
-            user.nation = "USA"
-            user.save()
-            login(request, user)
-            if "admin" in request.path:
-                return redirect('admin_home')
-            return redirect('emp_home')
-        else:
-            print("form has errors:", post_form.errors.as_data())
-    else:
-        post_form = EmployeeCreationForm()
+from django.shortcuts import render, redirect
+from django.contrib.auth import login,authenticate
+from django.contrib import messages
+from .models import Employee  # Import the custom Employee model
 
-    return render(request, 'employee_creation_screen.html', {'form': post_form})
+def new_employee_register(request):
+    # Check if the request method is POST to handle form submission
+    if request.method == "POST":
+        # Retrieve each field directly from the request.POST dictionary
+        first_name = request.POST.get('first_name')
+        last_name = request.POST.get('last_name')
+        contact_number = request.POST.get('contact_number')
+        email = request.POST.get('email')
+        employee_identifier = request.POST.get('employee_identifier')
+        password1 = request.POST.get('password1')
+        password2 = request.POST.get('password2')
+        street_address_1 = request.POST.get('street_address_1')
+        street_address_2 = request.POST.get('street_address_2')
+        city = request.POST.get('city')
+        state = request.POST.get('state')
+        zip_code = request.POST.get('zip_code')
+
+        # Perform basic validation
+        if password1 != password2:
+            messages.error(request, "Passwords do not match.")
+            return render(request, 'employee_creation_screen.html')
+
+        if Employee.objects.filter(username=email).exists():
+            messages.error(request, "Email is already registered.")
+            return render(request, 'employee_creation_screen.html')
+
+        # Create the new Employee instance
+        user = Employee.objects.create_user(
+            username=email,
+            email=email,
+            password=password1,
+            first_name=first_name,
+            last_name=last_name
+        )
+
+        # Set additional fields specific to Employee model
+        user.identification_number = employee_identifier
+        user.contact_number = contact_number
+        user.street_address_1 = street_address_1
+        user.street_address_2 = street_address_2
+        user.city = city
+        user.state = state
+        user.zip_code = zip_code
+        user.nation = "USA"  # Default to USA
+
+        # Set admin privileges if the path indicates admin registration
+        if "admin" in request.path:
+            user.is_staff = True
+            user.is_superuser = True
+        else:
+            user.date_of_hire = timezone.now().date()  # Set the hire date for regular employees
+
+        # Save the Employee instance with all fields
+        user.save()
+        print("User details updated successfullly")
+        print(user.pk)
+        # Log in the user immediately after registration
+        # Authenticate and log in the user to ensure session activation
+        authenticated_user = authenticate(username=email, password=password1)
+        if authenticated_user is not None:
+            login(request, authenticated_user)
+            print("User session created successfully")
+        else:
+            print("Authentication failed for new user")
+
+        # Redirect to the appropriate home page based on the user type
+        if "admin" in request.path:
+            return redirect('admin_home')
+        return redirect('emp_home')
+
+    # Render the form for GET requests
+    return render(request, 'employee_creation_screen.html')
+
 
 
 from .forms import EmployeeAddressUpdateForm
@@ -284,7 +323,7 @@ def update_employee_details(request):
             # You can add a success message here or redirect to another page
             if "admin" in request.path:
                 return redirect('admin_home')
-            return redirect('employee_home')
+            return redirect('emp_home')
     else:
         form = EmployeeAddressUpdateForm(instance=request.user)
 
@@ -293,14 +332,48 @@ def update_employee_details(request):
     }
     return render(request, 'employee_profile_update.html', context)
 
+from .forms import AdminUpdateForm
 
+def update_admin_details(request):
+
+    if request.method == 'POST':
+        form = AdminUpdateForm(request.POST, instance=request.user)
+        if form.is_valid():
+            form.save()
+            #request.user.active_employee = True
+            request.user.save()
+            # You can add a success message here or redirect to another page
+            return redirect('admin_home')
+    else:
+        form = AdminUpdateForm(instance=request.user)
+
+    context = {
+        'form': form
+    }
+    return render(request, 'admin_profile_update.html', context)
+
+def employee_profile_view(request):
+    if not request.user.is_active:
+        print("employee is not active")
+    return render(request,'emp_profile.html')
 
 
 def show_admin_details(request):
     return render(request, 'admin_profile.html')
 
-def employee_profile_view(request):
-    return render(request,'emp_profile.html')
+# views.py
+
+from django.contrib.auth import logout
+def employee_logout_from_system(request):
+    logout(request)
+    messages.success(request, "You have been logged out successfully.")
+    return redirect('emp_login')  # Replace 'login' with the name of your login page URL
+
+def employee_logout(request):
+    return render(request,'employee_logout.html')
+
+
+
 
 from .models import EmployeeAttendanceRecord
 def get_all_employee_attendance_history(request):

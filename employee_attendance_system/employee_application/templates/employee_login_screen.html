@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>Employee Login</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- W3.CSS -->
+    <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
+    <style>
+        body, html {
+            height: 100%;
+            margin: 0;
+            font-family: Arial, sans-serif;
+        }
+
+        .w3-button-custom {
+            color: white;
+            background-color: #ff5733 !important;
+            border-radius: 25px !important;
+            width: 200px;
+        }
+        .container {
+            max-width: 500px;
+            margin: auto;
+            padding-top: 50px;
+        }
+
+        .header-text {
+            font-size: 24px;
+            font-weight: bold;
+            color: #333;
+            margin-bottom: 20px;
+        }
+
+
+    </style>
+</head>
+<body class="w3-light-grey">
+
+<!-- Content Wrapper -->
+<br><br><br><br>
+<div class="w3-container w3-center container w3-white w3-card w3-round-large w3-padding">
+
+    <h3 class="header-text">Employee Login</h3>
+    <form method="post" action="/employee/admin/login/">
+        {% csrf_token %}
+        <div class="w3-margin-bottom">
+            <label for="Email" class="w3-text-dark-gray">Email Address</label>
+            <input id="Email" type="email" class="w3-input w3-border w3-round" name="admin_email" required>
+        </div>
+        <div class="w3-margin-bottom">
+            <label for="Password" class="w3-text-dark-gray">Password</label>
+            <input id="Password" type="password" class="w3-input w3-border w3-round" name="admin_password" required>
+        </div>
+        <button type="submit" class="w3-button w3-button-custom" style="width:100px;">Login</button>
+    </form>
+</div>
+<!-- End Content Wrapper -->
+
+</body>
+</html>

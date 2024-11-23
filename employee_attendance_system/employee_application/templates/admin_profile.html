@@ -2,138 +2,84 @@
 <html lang="en">
 
 <head>
-    <title>Admin Details</title>
+    <title>Admin Profile Details</title>
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <!-- Bootstrap CSS -->
-    <link href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" rel="stylesheet">
-
+    <!-- W3.CSS -->
+    <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
     <style>
-
-
-        .btn{
-            color: white;
-            background-color:#ff5733 !important;
-            border-color:#ff5733 !important;
-            border-radius:25px !important;
-        }
         body {
-            display: flex;
-            flex-direction: column;
+            background-color: #f8f9fa;
+            font-family: Arial, sans-serif;
         }
-
-        main {
-            flex: 1;
-        }
-
         .container {
-            width: 80% !important;
+            max-width: 80%;
+            margin: auto;
+            padding-top: 30px;
         }
-
         .header-text {
             font-size: 28px;
-            text-align: center;
             font-weight: bold;
+            color: #333;
         }
-
-        .profile-section {
-            margin-top: 30px;
-        }
-
         .profile-card {
             padding: 20px;
             border-radius: 10px;
-            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+            background-color: #fff;
+            box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.1);
         }
-
         .update-btn {
-            background-color: #007bff;
+            background-color: #ff5733;
             color: white;
-            border: none;
+            border-radius: 25px;
             padding: 10px 20px;
-            border-radius: 5px;
-            text-align: center;
-            margin-top: 20px;
             cursor: pointer;
+            text-decoration: none;
         }
-
         .update-btn:hover {
-            background-color: #0056b3;
-        }
-
-        table {
-            margin-bottom: 20px;
+            background-color: #e64a19;
         }
     </style>
 </head>
 
 <body>
+<br><br><br>
+<div class="w3-container container w3-card w3-white w3-round-large w3-padding">
+    <center>
+        <h1 class="header-text">Admin Profile Details</h1>
+    </center>
 
-    <div class="container mt-5">
-        <center>
-            <h1 class="header-text">Admin Profile Details</h1>
-        </center>
-
-        <!-- Employee Personal Details Section -->
-        <div class="profile-section">
-            <div class="profile-card">
-                <table class="table table-borderless">
-                    <tbody>
-                        <tr>
-                            <td><strong>First Name:</strong></td>
-                            <td>{{ request.user.first_name }}</td>
-                        </tr>
-                        <tr>
-                            <td><strong>Last Name:</strong></td>
-                            <td>{{ request.user.last_name }}</td>
-                        </tr>
-                        <tr>
-                            <td><strong>Email:</strong></td>
-                            <td>{{ request.user.email }}</td>
-                        </tr>
-                        <tr>
-                            <td><strong>Phone Number:</strong></td>
-                            <td>{{ request.user.username }}</td>
-                        </tr>
+    <!-- Admin Personal Details Section -->
+    <div class="profile-section">
+        <div class="profile-card w3-margin-top">
+            <table class="w3-table w3-borderless">
+                <tbody>
                     <tr>
-                            <td><strong>Address Line 1:</strong></td>
-                            <td>{{ request.user.street_address_1 }}</td>
-                        </tr>
-                        <tr>
-                            <td><strong>Address Line 2:</strong></td>
-                            <td>{{ request.user.street_address_2 }}</td>
-                        </tr>
-                        <tr>
-                            <td><strong>City & State:</strong></td>
-                            <td>{{ request.user.city }} & {{ request.user.state }}</td>
-                        </tr>
-                        <tr>
-                            <td><strong>Country & Zip Code:</strong></td>
-                            <td>USA & {{ request.user.zip_code }}</td>
-                        </tr>
-                        <tr>
-                            <td><strong>Identification Number:</strong></td>
-                            <td>{{ request.user.identification_number }}</td>
-                        </tr>
-
-                    </tbody>
-                </table>
-            </div>
+                        <td><strong>First Name:</strong></td>
+                        <td>{{ request.user.first_name }}</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Last Name:</strong></td>
+                        <td>{{ request.user.last_name }}</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Email:</strong></td>
+                        <td>{{ request.user.email }}</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Phone Number:</strong></td>
+                        <td>{{ request.user.username }}</td>
+                    </tr>
+                </tbody>
+            </table>
         </div>
-
-
-
-        <!-- Update Profile Button -->
-        <br><br>
-        <div class="text-center">
-
-                <a href="/admin/profile/update/" class="btn">Update Profile</a>
-
-        </div>
-
-        <br><br>
-
     </div>
 
-</body>
+    <!-- Update Profile Button -->
+    <div class="w3-center w3-margin-top">
+        <a href="/admin/profile/update/" class="w3-button update-btn">Update Profile</a>
+    </div>
 
+</div>
+
+</body>
 </html>

@@ -97,6 +97,8 @@ ACCOUNT_EMAIL_VERIFICATION = "none"
 
 AUTH_USER_MODEL = "employee_application.Employee"
 
-CRISPY_TEMPLATE_PACK = 'bootstrap4'
 
+
+SESSION_COOKIE_SECURE = False  # Set to True if HTTPS is used
+SESSION_COOKIE_HTTPONLY = True
 

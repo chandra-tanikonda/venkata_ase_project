@@ -64,7 +64,7 @@ def open_web_browser_for_qr_code_scan():
             # Check if an attendance record already exists for today
             attendance_record, created = EmployeeAttendanceRecord.objects.get_or_create(
                 employee=employee,
-                attendance_date=today
+                attendance_date=today,
             )
 
             # Provide feedback based on whether the record was created or already existed
